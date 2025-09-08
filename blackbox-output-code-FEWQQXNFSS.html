@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Varnika's Enchanted Journal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: radial-gradient(circle, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            font-family: 'Poppins', sans-serif;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .heart-pulse {
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .entry {
+            border-left: 4px solid #ff6b9d;
+            background: linear-gradient(to right, #ffebee, transparent);
+        }
+        .message-bubble {
+            background: linear-gradient(135deg, #ffcccc, #ff99aa);
+            position: relative;
+            color: #fff;
+            border-radius: 12px 12px 12px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .message-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 20px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid #ff99aa;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #ff6b9d;
+            box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.2);
+        }
+        #main-content {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+        #main-content.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Login Section -->
+    <div id="login" class="flex flex-col items-center justify-center min-h-screen px-4">
+        <div class="card p-8 max-w-md w-full text-center animate-fade-in">
+            <div class="mb-4">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/a11b9e62-0384-40c7-a70f-51b4a558cc05.png" alt="A gentle heart-shaped image with soft pink petals, symbolizing love and intimacy, created in a minimalist style with white background and subtle shadows" class="heart-pulse mx-auto rounded-full shadow-lg" />
+            </div>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Welcome to Your Sanctum</h1>
+            <p class="text-gray-600 mb-6">Varnika, unlock your private haven where ideas bloom and love whispers.</p>
+            <input type="password" id="password" placeholder="Whisper the secret phrase" class="w-full p-4 border border-gray-300 rounded-xl mb-6 focus:ring-0" />
+            <button onclick="unlockDiary()" class="w-full bg-gradient-to-r from-pink-500 to-red-500 text-white py-4 rounded-xl font-semibold hover:from-pink-600 hover:to-red-600 transition duration-300">Awaken Your Dreams</button>
+            <p class="text-sm text-gray-500 mt-4">Your secrets are safe, stored only in your heart... or locally on your device.</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <header class="text-center py-12 px-4">
+            <div class="card max-w-4xl mx-auto p-8 animate-fade-in">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 mb-4">Varnika's Enchanted Journal</h1>
+                <div class="mb-6">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/9ffe62c1-c812-499f-aff8-2a4595f1a84a.png" alt="An illuminated ancient journal with ornate gold edges, open to reveal swirling romantic illustrations of hearts, stars, and swirling vines, inspired by fairy tales, in warm sepia tones with soft glows and mystical elements" class="w-full rounded-xl shadow-lg" />
+                </div>
+                <p class="text-lg text-gray-700 leading-relaxed">Dear Varnika, this is your canvas for creativity, reflections, and tender messages meant just for us. Let your thoughts dance freely.</p>
+            </div>
+        </header>
+
+        <main class="grid md:grid-cols-2 gap-8 px-4 md:px-8 pb-12 max-w-6xl mx-auto">
+            <!-- Thoughts Section -->
+            <section class="card p-8">
+                <h2 class="text-2xl font-bold text-green-700 mb-6 flex items-center">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/bdbd7242-a5cf-41e7-bf7e-c12973a03bb0.png" alt="A sparkling lightbulb icon glowing with warm yellow light, symbolizing bright ideas and inspiration, in cartoon style on transparent background" class="mr-3" />
+                    Unleash Your Ideas & Thoughts
+                </h2>
+                <form id="thought-form" class="space-y-6">
+                    <input type="text" id="thought-title" placeholder="Give your masterpiece a name..." class="w-full p-4 border border-gray-300 rounded-xl" required />
+                    <textarea id="thought-content" placeholder="Pour your heart out here—ideas, dreams, musings..." rows="6" class="w-full p-4 border border-gray-300 rounded-xl" required></textarea>
+                    <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-teal-500 text-white py-4 rounded-xl font-semibold hover:from-green-600 hover:to-teal-600 transition duration-300">
+                        Spark a New Entry
+                    </button>
+                </form>
+                <div id="thoughts-list" class="mt-8 space-y-4 overflow-y-auto max-h-96"></div>
+            </section>
+
+            <!-- Messages Section -->
+            <section class="card p-8">
+                <h2 class="text-2xl font-bold text-red-600 mb-6 flex items-center">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d57bb1d0-d79b-46af-bae7-47a4814ea64a.png" alt="A cute love letter envelope with heart stamps, sealed in red wax, evoking romance and personal communication, illustrated in charming vintage style" class="mr-3" />
+                    Love Notes for Him
+                </h2>
+                <form id="message-form" class="space-y-6">
+                    <textarea id="personal-message" placeholder="Write something from your soul to mine..." rows="8" class="w-full p-4 border border-gray-300 rounded-xl" required></textarea>
+                    <button type="submit" class="w-full bg-gradient-to-r from-red-500 to-pink-500 text-white py-4 rounded-xl font-semibold hover:from-red-600 hover:to-pink-600 transition duration-300">
+                        Send with Love
+                    </button>
+                </form>
+                <div id="messages-display" class="mt-8 space-y-4 overflow-y-auto max-h-96"></div>
+            </section>
+        </main>
+
+        <footer class="text-center py-8 bg-white bg-opacity-50">
+            <p class="text-gray-700">Crafted with unwavering affection for Varnika. Remember, this realm is yours alone, and every word lingers only here, in the quiet safety of your device.</p>
+        </footer>
+    </div>
+
+    <script>
+        const defaultPassword = 'iloveyou'; // Simple password; advise changing it for security
+
+        function unlockDiary() {
+            const password = document.getElementById('password').value;
+            if (password === defaultPassword) {
+                document.getElementById('login').style.display = 'none';
+                document.getElementById('main-content').classList.add('show');
+                initializeDiary();
+            } else {
+                alert('Oh, that\'s not quite right. Try again, my love.');
+            }
+        }
+
+        function initializeDiary() {
+            loadThoughts();
+            loadMessages();
+        }
+
+        // Thoughts Functionality
+        document.getElementById('thought-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const title = document.getElementById('thought-title').value.trim();
+            const content = document.getElementById('thought-content').value.trim();
+            if (!title || !content) return;
+
+            const thought = {
+                title,
+                content,
+                date: new Date().toLocaleString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }),
+                id: Date.now()
+            };
+
+            const thoughts = JSON.parse(localStorage.getItem('varnika_thoughts') || '[]');
+            thoughts.push(thought);
+            localStorage.setItem('varnika_thoughts', JSON.stringify(thoughts));
+            displayThoughts(thoughts);
+            this.reset();
+        });
+
+        function loadThoughts() {
+            const thoughts = JSON.parse(localStorage.getItem('varnika_thoughts') || '[]');
+            displayThoughts(thoughts);
+        }
+
+        function displayThoughts(thoughts) {
+            const list = document.getElementById('thoughts-list');
+            list.innerHTML = '';
+            thoughts.reverse().forEach(thought => {
+                const entryDiv = document.createElement('div');
+                entryDiv.className = 'entry rounded-xl p-6';
+                entryDiv.innerHTML = `
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">${thought.title}</h3>
+                    <p class="text-gray-700 leading-relaxed mb-4">${thought.content}</p>
+                    <small class="text-gray-500 block text-right">${thought.date}</small>
+                `;
+                list.appendChild(entryDiv);
+            });
+        }
+
+        // Messages Functionality
+        document.getElementById('message-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const message = document.getElementById('personal-message').value.trim();
+            if (!message) return;
+
+            const msg = {
+                content: message,
+                date: new Date().toLocaleString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }),
+                id: Date.now()
+            };
+
+            const messages = JSON.parse(localStorage.getItem('varnika_messages') || '[]');
+            messages.push(msg);
+            localStorage.setItem('varnika_messages', JSON.stringify(messages));
+            displayMessages(messages);
+            this.reset();
+        });
+
+        function loadMessages() {
+            const messages = JSON.parse(localStorage.getItem('varnika_messages') || '[]');
+            displayMessages(messages);
+        }
+
+        function displayMessages(messages) {
+            const display = document.getElementById('messages-display');
+            display.innerHTML = '';
+            messages.reverse().forEach(msg => {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'message-bubble p-6 mb-4';
+                msgDiv.innerHTML = `
+                    <p class="text-white leading-relaxed mb-2">${msg.content}</p>
+                    <small class="text-pink-200 block text-right">${msg.date}</small>
+                `;
+                display.appendChild(msgDiv);
+            });
+        }
+    </script>
+</body>
+</html>
+</content>
+</create_file>
